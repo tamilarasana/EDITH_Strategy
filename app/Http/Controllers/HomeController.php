@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 
-
-
 class HomeController extends Controller
 {
     /**
@@ -27,11 +25,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
         $user = Auth::User();
         $user->id;
         $user = Order::where('id',$user->id)->get();
-        // $wishlist = Wishlist::where('user_id', $user->id)->get();
         return view('index');
     }
 }

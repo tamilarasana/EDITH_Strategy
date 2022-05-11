@@ -52,7 +52,6 @@ class User extends Authenticatable
     ];
 
 
-
     public function basket(){
        return $this->hasMany(Basket::class);
     }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HoldingsController;
+use App\Http\Controllers\HomeController;
 
 
 
@@ -33,12 +34,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => 'auth'],function(){
     Route::resource('basket', BasketController::class);
     Route::resource('orders', OrderController::class);
     Route::post('orders/exitprice/{id?}', [OrderController::class,'exitPrice'])->name('oreder.exitprice');
-
     Route::resource('holdings', HoldingsController::class);
     Route::get('/data-details',[HoldingsController::class,'getData'])->name('holdings.data');
+    // Route::get('/holding/orders',[HoldingsController::class,'getHoldings'])->name('holdingslist.data');
+    Route::get('detailedorder', 'App\Http\Controllers\OrderController@getAllOrder')->name('basket.data');
 });

@@ -65,10 +65,9 @@ strategy
 	function realTime() {
 		$.ajax({
 			type:'get',
-			url:'{{ route( 'holdings.data' ) }}',
+			url:'{{ route( 'holdingslist.data' ) }}',
 			data:{
-				'basket_id':"{{$basket_id }}",
-				'_token':"{{ csrf_token() }}"
+				'id':id,
 			},
 			success: function (result) {
 				$('#qty').html('');

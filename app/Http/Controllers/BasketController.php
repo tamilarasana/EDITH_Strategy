@@ -7,11 +7,10 @@ use App\Models\Basket;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 
-
 class BasketController extends Controller
 {
-
-    public function __construct()
+    
+       public function __construct()
     {
         $this->middleware(['auth']);
     }
@@ -46,8 +45,7 @@ class BasketController extends Controller
      */
     public function store(Request $request)
     {
-
-        $basket = New Basket;
+         $basket = New Basket;
         $basket->user_id = Auth::User()->id;
         $basket->basket_name = $request->basket_name;
         $basket->target_strike = $request->target_strike;
@@ -59,10 +57,11 @@ class BasketController extends Controller
         $basket->weekDays = $request->weekDays;
         $basket->strategy = $request->strategy;
         $basket->qty = $request->qty;
+        $basket->status = "Active"; # Status as per the Scheduled Basket..
         $basket->save();
        
 
-            $test = $request->data;
+        $test = $request->data;
         foreach($test as $tes){
        
             $order = New Order;
@@ -72,6 +71,7 @@ class BasketController extends Controller
             $order->token_id = $tes['token_id'];
             $order->token_name = $request['indices'].$tes['token_strike'].$tes['strick_type'];
             $order->order_type = $tes['order_type'];
+            $order->status = "Active"; # Status as per the Scheduled Orders..
             $order->save();    
         }
 
@@ -110,7 +110,34 @@ class BasketController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+          $order = Basket::findOrFail($id);
+        //   dd($request);
+          if($request->has('stop_loss')){
+         $order['stop_loss'] = $request->stop_loss;
+          }
+          if($request->has('target_strike')){
+         $order['target_strike'] = $request->target_strike;
+          }
+          if($request->has('current_target')){
+         $order['current_target'] = $request->current_target;
+          }
+          if($request->has('prev_current_target')){
+         $order['prev_current_target'] = $request->prev_current_target;
+          }
+          if($request->has('pnl_perc')){
+         $order['pnl_perc'] = $request->pnl_perc;
+          }
+         if($request->has('pnl')){
+         $order['pnl'] = $request->pnl;    
+         }
+          if($request->has('init_target')){
+         $order['init_target'] = $request->init_target;
+          }
+              if($request->has('stop_loss')){
+         $order['stop_loss'] = $request->stop_loss;
+              }
+         $order->save();
+         return response()->json(['status'=>200, 'message'=>'Basket Updated Successfully !']);
     }
 
     /**

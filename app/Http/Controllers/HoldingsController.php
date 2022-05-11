@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class HoldingsController extends Controller
 {
-
+    
     public function __construct()
     {
         $this->middleware('auth');
@@ -22,6 +22,12 @@ class HoldingsController extends Controller
      */
     public function index()
     {
+       
+        if(request()->has('basket_id')){
+            $basket_id = request()->basket_id;
+        }else{
+            $basket_id = 0;
+        }
     //     $order = Order::pluck('token_id');
     //     $tick = Tick::get('properties');
     //     $tt = json_decode($tick,true);
@@ -43,49 +49,71 @@ class HoldingsController extends Controller
     //     return response()->json('success',201);
     // }
     //     $holdings = Order::with('basket')->get();
-        return view('holdings.index');
+        return view('holdings.index',compact('basket_id'));
     }
+
+    // public function list(){
+    //     return view('holdings.list');
+    // }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function getData()
-    {
-// new start
-        $ordered = Order::pluck('token_id');
-        $tick = Tick::get('properties');
-        $tt = json_decode($tick,true);
-        $td = $tt[0];
 
-        // for($i = 0; $i < count($ordered); $i++){
-        //     foreach($td as $data){
-        //         foreach( $data as $var){
-        //             if($var['instrument_token'] == $ordered[$i]){
-
-        //                 $results = Order::where('token_id','=',  $ordered[$i])->where('order_avg_price',null)
-        //                     ->update([
-        //                             'order_avg_price' => $var['last_price']
-        //                     ]);
-                        
-        //                 // $ltp = Order::where('token_id', $order[$i])->first();
-        //                    $results = Order::where('token_id','=',  $ordered[$i])
-        //                     ->update([
-        //                             'ltp' => $var['last_price']
-        //                     ]);
-        //             } 
-        //         }
-        //     }
-        // }   
-// end new
-// $data->user_id = Auth::User()->id;
+     public function getHoldings()
+     {
         $user = Auth::user();
         $user_id = $user->id;
-        $order = Order::with('basket')->where('user_id', $user_id)->where('status', 'Active')->get();
-        
-        // $basket = Basket::with('orders')->where('user_id', $user_id)->where('status', 'Active')->get();
+        $order = Order::with('basket')->where('user_id', $user_id)->where('basket_id',request()->id)->where('status', 'Active')->get();
+        foreach($order as $key=>$row) {
+            $basket = Basket::find($row->basket_id);
+            $order[$key]['basket_name'] = $basket->basket_name;
+        }
+        return response()->json(['order' => $order]);
+     }
+    public function getData()
+    {
 
+        
+        // dd(request()->basket_id);
+        // $ordered = Order::pluck('token_id');
+        // $tick = Tick::get('properties');
+        // $tt = json_decode($tick,true);
+        // $td = $tt[0];
+        // dd(request()->all());
+
+
+    // for($i = 0; $i < count($ordered); $i++){
+           //     foreach($td as $data){
+           //         foreach( $data as $var){
+           //             if($var['instrument_token'] == $ordered[$i]){
+   
+           //                 $results = Order::where('token_id','=',  $ordered[$i])->where('order_avg_price',null)
+           //                     ->update([
+           //                             'order_avg_price' => $var['last_price']
+           //                     ]);
+                           
+           //                 // $ltp = Order::where('token_id', $order[$i])->first();
+           //                    $results = Order::where('token_id','=',  $ordered[$i])
+           //                     ->update([
+           //                             'ltp' => $var['last_price']
+           //                     ]);
+           //             } 
+           //         }
+           //     }
+           // }   
+   // end new
+   // $data->user_id = Auth::User()->id;
+        
+        $user = Auth::user();
+        $user_id = $user->id;
+        $orderdet = Order::with('basket')->where('user_id', $user_id)->where('status', 'Active');
+        if(request()->basket_id != 0){
+            $orderdet->where('basket_id',request()->basket_id);
+        }
+        $order = $orderdet->get();
         foreach($order as $key=>$row) {
             $basket = Basket::find($row->basket_id);
             $order[$key]['basket_name'] = $basket->basket_name;

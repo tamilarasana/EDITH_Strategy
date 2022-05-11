@@ -18,6 +18,8 @@ class Basket extends Model
         'stop_loss',
         'target_strike',
         'init_target',
+        'current_target',
+        'prev_current_target',
         'sq_loss',
         'scheduled_exec',
         'scheduled_sqoff',
@@ -27,11 +29,7 @@ class Basket extends Model
         'qty',
         'Pnl',
         'Pnl_perc',
-        'init_Target',
-        'current_target',
-        'target_strike',
-        'stop_loss',
-        'status',
+        'status',      
     ];
 
 

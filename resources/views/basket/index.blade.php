@@ -8,7 +8,7 @@ Basket
 <br><br>
 <div class="container-fluid"> 
     <div class="row">
-        <div class="col-md-12 grid-margin">
+        <div class="col-12 grid-margin">
             <div class="card">
                 <div class="card-header">
                     <p class="card-description">Opstra Options Analytics</p>
@@ -18,50 +18,27 @@ Basket
                 <div class="card-body">
                     <div class="table-responsive">
                         <span id="result"></span>
-                        <table  class=" table table-bordered table-hover "  >
+                        <table  class=" table table-bordered "  >
                             <thead>
                                 <tr>
-                                    <th><b> id</b></th>
                                     <th><b> Basket Name</b></th>
-                                    <th><b> Target</b></th>
+                                    <!--<th><b> Target</b></th>-->
                                     <th><b>Init Target</b></th>
 									<th><b>Target Strike</b></th>
 									<th><b>Stop Loss</b></th>
-                                    <th><b> Scheduled Exc</b></th>
-                                    <th><b> Scheduled_sq Off</b></th>
-                                    <th><b> Recorring</b></th>
-                                    {{-- <th><b> WeekDays</b></th> --}}
-                                    <th><b> Strategy</b></th>
+									<th><b>Current Target</b></th>
+									<th><b>Status</b></th>
+									<th><b>Total PNL</b></th>
+                                    <!--<th><b> Scheduled Exc</b></th>-->
+                                    <!--<th><b> Scheduled_sq Off</b></th>-->
+                                    <!--<th><b> Recorring</b></th>-->
+                                    <!--<th><b> WeekDays</b></th>-->
+                                    <!--<th><b> Strategy</b></th>-->
                                     <th><b> qty</b></th>
-                                    <th><b> Action</b> </th>
+                                    <th><b>Action</b></th>
                                 </tr>
                             </thead>    
-                            <tbody>
-                                @foreach ($basketcat as  $result)
-                                <tr>
-                                    <td id="id_product">{{$result ->id}}</td>
-                                    <td>{{$result ->basket_name}}</td>
-                                    {{-- <td>{{$result ->sq_target}}</td> --}}
-                                    <td>{{$result ->init_target}}</td>
-                                    <td>{{$result ->target_strike}}</td>
-                                    <td>{{$result ->stop_loss}}</td>
-                                    <td>{{$result ->scheduled_exec}}</td>
-                                    <td>{{$result ->scheduled_sqoff}}</td>
-                                    <td>{{$result ->recorring}}</td>
-                                    <td>{{$result ->weekDays}}</td>
-                                    <td>{{$result ->strategy}}</td>
-                                    <td>{{$result ->qty}}</td>
-                                    <td>
-                                        {{-- <a href="{{ route('baskets.edit', [$result->id]) }}"  class="btn btn-sm btn-info">Add</a> --}}
-                                    <div class="form-button-action">
-							<form action="{{ route('basket.destroy', [$result->id]) }}" method="post"enctype="multipart/form-data" >
-									 @csrf
-							     <input name="_method" type="hidden" value="DELETE">
- 								<button class="btn btn-danger btn-sm " data-name="{{ $result->basket_name }}" type="submit"  >Delete</i></button>
-                            </form>
-                            </div>
-                                </tr>
-                                @endforeach
+                            <tbody id="basketList">
                             </tbody>
                         </table>
                     </div>
@@ -73,16 +50,47 @@ Basket
 
 @endsection
 @section('scripts')
-
-{{-- <script>
+<script>
+	$(document).ready(function(){
+		$.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+	setInterval(function(){
+		realTime();	
+	},1000);
+	function realTime() {
+		$.ajax({
+			type:'get',
+			url:'{{ route( 'basket.data' ) }}',
+			data:{
+				'_token':"{{ csrf_token() }}",
+			},
+			success: function (result) {
+			    $('#basketList').html('');
+				$.each(result.data, function (key, value){
+				        console.log(value.target_strike);
+				    $("#basketList").append('<tr><td>'+value.basket_name+'</td><td>'+value.init_target+'</td><td>'+value.target_strike+'</td><td>'+value.stop_loss+'</td><td>'+value.prev_current_target+'</td><td></td><td>'+value.Pnl+'</td><td>'+value.qty+'</td><td><button class= "btn btn-warning edit_data" id="show" data-id='+value.id+'> View </button></td></tr>');	    
+				})
+			},
+			error: function () {
+				console.log('Error');
+			}
+		});
+	}
+});
+</script>
+<script>
     $(document).ready(function(){
-        $('table tbody tr').click(function (){
-            let id = $(this).data('id')
-            var id = $('#id_product').val();
-            console.log(id);
+        $('body').on("click", ".edit_data", function(){
+            var id = $(this).attr("data-id");
+            var base_url = window.location.origin;
+            window.location.href = base_url + "/holdings?basket_id=" + id + "";                      
         })
     });
-</script> --}}
+</script>
+
+
 
 @endsection
-

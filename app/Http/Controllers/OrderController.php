@@ -6,17 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Basket;
 use Illuminate\Support\Facades\Auth;
-
-
-
 class OrderController extends Controller
 {
-
-    public function __construct()
+    
+     public function __construct()
     {
         $this->middleware(['auth']);
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -24,19 +20,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-
-        // $data->user_id = Auth::User()->id;
-
-        // $user = Auth::User();
-        // $user->id;
-        // $user = Auth::user();
-        // $user_id = $user->id;
-        
-
-        $user = Auth::User();
+          $user = Auth::User();
         $user->id;
         $basket = Basket ::where('user_id',$user->id)->get();
-        // $basket = Basket::all();
         return view('strategy-builder',['basket' => $basket]);
     }
 
@@ -93,9 +79,23 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function getOrder()
     {
-        //
+        $data = Order::where('status','Active')->pluck('token_id');
+        return $data;
+    }
+    
+    public function getAllOrder()
+    {
+        // $data = Order::with('basket')->where('status','Active')->get();
+        // return response()->json(['status'=>200,'data'=>$data]);
+                $data = Basket::with(['orders' => function ($query) {
+                                $query->where('status','Active');
+                    
+                }])->get();
+                
+        return response()->json(['status'=>200,'data'=>$data]);
+
     }
 
     /**
@@ -107,7 +107,39 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+         $order = Order::findOrFail($id);
+         
+          if($request->has('ltp')){
+         $order['ltp'] = $request->ltp;
+          }
+         
+          if($request->has('order_avg_price')){
+         $order['order_avg_price'] = $request->order_avg_price;
+          }
+         
+          if($request->has('pnl')){
+         $order['pnl'] = $request->pnl;
+          }
+          if($request->has('pnl_perc')){
+         $order['pnl_perc'] = $request->pnl_perc;
+          }
+         if($request->has('status')){
+         $order['status'] = $request->status;    
+         }
+          if($request->has('total_inv')){
+         $order['total_inv'] = $request->total_inv;
+          }
+           if($request->has('init_target')){
+         $order['init_target'] = $request->init_target;
+           }
+            if($request->has('current_target')){
+         $order['current_target'] = $request->current_target;
+            }
+            if($request->has('stop_loss')){
+         $order['stop_loss'] = $request->stop_loss;
+            }
+         $order->save();
+         return response()->json(['status'=>200, 'message'=>'Order Updated Successfully !']);
     }
 
     /**
@@ -120,7 +152,7 @@ class OrderController extends Controller
     {
         //
     }
-
+    
     public function exitPrice($id){
         $order = Order::findOrFail($id);
         $exitprice =  $order->ltp;

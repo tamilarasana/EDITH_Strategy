@@ -71,6 +71,12 @@ class TickerController extends Controller
     {
         //
     }
+    
+     public function getOrder()
+    {
+        $data = Order::where('status','Active')->pluck('token_id');
+        return $data;
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -212,23 +218,23 @@ class TickerController extends Controller
                  foreach($basket_data['orders'] as $basket_orders){
                      
                      $updateOrderData = Order::where('id', $basket_orders['id'])->first();
-                 
                      $updateOrderData['status'] = 'Squared';
                      $updateOrderData->save();
                      
                  }
                  
+             $updateBasketStatus = Basket::where('id', $basket_data['id'])->first();
+             $updateBasketStatus['status'] = 'Squared';
+             $updateBasketStatus->save();
+                 
              }
+             
+             $updateBasketPnl = Basket::where('id', $basket_data['id'])->first();
+             $updateBasketPnl['Pnl'] = $totalBasketPnl;
+             $updateBasketPnl->save();
              
                
          }#Basket for loop
-    
-         
-        
-        
-        
-        
-        
         
     //   $exist = Tick::where('status', 1)->get();
     //   if($exist){
