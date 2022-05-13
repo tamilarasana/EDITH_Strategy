@@ -11,18 +11,19 @@ Basket
         <div class="col-12 grid-margin">
             <div class="card">
                 <div class="card-header">
-                    <p class="card-description">Opstra Options Analytics</p>
+                    <p class="card-description">E.D.I.T.H AI Trading Software.</p>
                     <a href="{{route('basket.create')}}" class="btn btn-primary btn-round float-end">Add</i>
                     </a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <span id="result"></span>
-                        <table  class=" table table-bordered "  >
+                        <table  class=" table table-bordered  "  >
                             <thead>
-                                <tr>
+                                <tr style="background-color:rgb(242, 242, 242)">
                                     <th><b> Basket Name</b></th>
-                                    <!--<th><b> Target</b></th>-->
+                                    <th><b>Created At</b></th>
+                                    <th><b>Updated At</b></th>
                                     <th><b>Init Target</b></th>
 									<th><b>Target Strike</b></th>
 									<th><b>Stop Loss</b></th>
@@ -50,6 +51,7 @@ Basket
 
 @endsection
 @section('scripts')
+
 <script>
 	$(document).ready(function(){
 		$.ajaxSetup({
@@ -69,10 +71,26 @@ Basket
 			},
 			success: function (result) {
 			    $('#basketList').html('');
+			    
 				$.each(result.data, function (key, value){
-				        console.log(value.target_strike);
-				    $("#basketList").append('<tr><td>'+value.basket_name+'</td><td>'+value.init_target+'</td><td>'+value.target_strike+'</td><td>'+value.stop_loss+'</td><td>'+value.prev_current_target+'</td><td></td><td>'+value.Pnl+'</td><td>'+value.qty+'</td><td><button class= "btn btn-warning edit_data" id="show" data-id='+value.id+'> View </button></td></tr>');	    
+				        // console.log(value.target_strike);
+				        var created  = new Date(value.created_at);
+				        created_at = created.toLocaleString("en-US")
+				        var updated = new Date(value.updated_at);
+				        updated_at = updated.toLocaleString("en-US");
+				        var bskStatus = value.status;
+				        
+				        
+				        
+				    $("#basketList").append('<tr id="record" style="background-color:rgb(252, 252, 252)"><td>'+value.basket_name+'</td><td>'+created_at+'</td><td>'+updated_at+'</td><td>'+value.init_target+'</td><td>'+value.target_strike+'</td><td>'+value.stop_loss+'</td><td>'+value.prev_current_target+'</td><td>'+value.status+'</td><td>'+value.Pnl.toFixed(2)+'</td><td>'+value.qty+'</td><td><button class= "btn btn-warning edit_data" id="show" data-id='+value.id+'> View </button>&nbsp;<button class= "btn btn-success" id="squareoffdata" data-id='+value.id+'> SquareOff </button></td></tr>');
+				    
+				    if(bskStatus == "Active"){
+				            $("#record").css({'background-color':'rgb(230, 255, 230)'});
+				            $("#record").css({'font-weight':'700'});
+				            $("#record").css({'color':'black'});
+				    }
 				})
+
 			},
 			error: function () {
 				console.log('Error');
@@ -81,6 +99,7 @@ Basket
 	}
 });
 </script>
+
 <script>
     $(document).ready(function(){
         $('body').on("click", ".edit_data", function(){
@@ -91,6 +110,30 @@ Basket
     });
 </script>
 
+<script>
+	$(document).on("click", "#squareoffdata", function(){
+		var id = $(this).attr("data-id");
+        let url = '{{route('oreder.exitprice')}}'
+        if(confirm("Are You sure want to SquareOff !")){
+            $.ajax({
+                url: url + '/' + id,
+                type: 'Post',
+                dataType: "JSON",
+                data:{
+                    "id":id,
+                    "_token": "{{ csrf_token() }}"},
+                success: function (data)
+                {
+                    alert(data);
+                    // location.reload();
+                    // $('#result').html('<div class="alert alert-success">'+data.success+'</div>');
+                }
+            });   
+        }		        
+	});
+</script>
+
 
 
 @endsection
+

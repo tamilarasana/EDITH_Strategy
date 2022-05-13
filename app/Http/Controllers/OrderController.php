@@ -89,7 +89,9 @@ class OrderController extends Controller
     {
         // $data = Order::with('basket')->where('status','Active')->get();
         // return response()->json(['status'=>200,'data'=>$data]);
-                $data = Basket::with(['orders' => function ($query) {
+        $user = Auth::User();
+        $user_id = $user->id;
+                $data = Basket::where('user_id',$user_id)->orderBy('updated_at', 'DESC')->with(['orders' => function ($query) {
                                 $query->where('status','Active');
                     
                 }])->get();
@@ -153,11 +155,16 @@ class OrderController extends Controller
         //
     }
     
-    public function exitPrice($id){
-        $order = Order::findOrFail($id);
-        $exitprice =  $order->ltp;
-        $order->exit_price = $exitprice;
-        $order->status = 'squared';
-        $order->save();
+    public function exitOrder($id){
+        $basket = Basket::findOrFail($id);
+        $basket -> status = 'Squared';
+        $basket->save();
+        $order = Order::where('basket_id',$id)->get();
+        foreach($order  as $ord){
+            $ord ->status = 'Squared';
+            $exitprice =  $ord->ltp;
+            $ord->exit_price = $exitprice;
+            $ord->save();
+        }
     }
 }

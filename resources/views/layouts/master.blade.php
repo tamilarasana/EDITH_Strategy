@@ -16,8 +16,6 @@
 </head>
 <body>
     <div class="container-fluid"> 
-        {{-- <nav class="navbar navbar-light light-blue lighten-4"> --}}
-
     <nav class="navbar navbar-expand-sm navbar-light ">
         <a class="navbar-brand" style="cursor: pointer; font-size:25px" href="#"><b>E.D.I.T.H</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,22 +26,21 @@
             <ul class="navbar-nav navbar-nav-right ml-auto">
                 <li class="nav-item ">
                     <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >
-                        Basket
+                        Positions
                     </a>            
                 </li>
-                <li class="nav-item active">
+                {{-- <li class="nav-item active">
                     <a class=" font-weight-medium btn-sm" href="{{route('orders.index')}}" >
                     orders
                     </a>
-                </li>
-                <li class="nav-item">
+                </li> --}}
+                {{-- <li class="nav-item">
                     <a class="  font-weight-medium btn-sm" href="{{ route('holdings.index') }}" >
                     Holdings
                     </a>
-                </li>   
+                </li>    --}}
                 <li class="nav-item dropdown hidden-caret">
-                    <a id="navbarDropdown" class="font-weight-medium btn-sm" href="#" role="button" data-toggle="dropdown" 	aria-haspopup="true" aria-expanded="false" v-pre>
-                        
+                    <a id="navbarDropdown" class="font-weight-medium btn-sm" href="#" role="button" data-toggle="dropdown" 			aria-haspopup="true" aria-expanded="false" v-pre>
                         {{ Auth::user()->name }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -51,6 +48,7 @@
                             onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
                                 <p class="text-danger text-center"><b> {{ __('Logout') }} </b></p>
+                            
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
@@ -79,6 +77,9 @@
 
 <!-- Azzara JS -->
 <script src="{{asset('assets/js/ready.min.js')}}"></script>
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
 
     @yield('scripts')
 

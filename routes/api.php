@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TickerController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\BasketController;
 
 
 /*
@@ -21,4 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('tick', TickerController::class);
+Route::put('pythonorder/{id}', 'App\Http\Controllers\OrderController@update');
 
+Route::get('orders', 'App\Http\Controllers\TickerController@getOrder');
+Route::get('detailedorder', 'App\Http\Controllers\OrderController@getAllOrder');
+
+Route::resource('basket', BasketController::class);
+// Route::post('basketUpdate',[BasketController::class, 'updateBasket']);

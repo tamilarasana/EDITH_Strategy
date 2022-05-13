@@ -1,4 +1,3 @@
-
 @extends('layouts.master')
 @section('title')
 strategy
@@ -68,7 +67,7 @@ strategy
 			url:'{{ route( 'holdings.data' ) }}',
 			data:{
 				'basket_id':"{{$basket_id }}",
-				'_token':"{{ csrf_token() }}"
+				'_token':"{{ csrf_token() }}",
 			},
 			success: function (result) {
 				$('#qty').html('');
@@ -131,7 +130,6 @@ strategy
 	}
 });
 </script>
-
 <script>
 	$(document).on("click", "#deleteRecord", function(){
 		var id = $(this).attr("data-id");

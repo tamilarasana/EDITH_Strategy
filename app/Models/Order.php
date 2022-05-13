@@ -29,9 +29,9 @@ class Order extends Model
         'order_avg_price',
         'ltp',
         'pnl',
-        'exit_price',
-        'is_delete'
-
+        'pnl_perc',
+        'total_inv',
+        'is_delete',
     ];
 
 
@@ -43,6 +43,7 @@ class Order extends Model
     public function user(){
       return $this->belongsTo(User::class ,'user_id');
     }
+
 
 
 }

@@ -103,30 +103,21 @@ class TickerController extends Controller
         $tickers = $request->all();
         // dd($tickers);
         
-        $average_price = 0;
-        $pnl = 0;
-        $orderPnl = 0;
-        $orderInvestment = 0;
-        $totalBasketPnl = 0;
-        $totalBasketInv = 0;
-        $pnl_perc = 0;
-        $ltp = 0;
-        $qty =0;
-        
-        
-        $newbasketPnl = 0;
-        $prev_target = 0;
-        $current_target = 0;
-        
-        $init_target = 0;
-        $stop_loss = 0;
-        $target_strike = 0;
-        
         
         
          $b_list = json_decode($basketList,true);
         
          foreach($b_list as $basket_data){
+             
+            $newbasketPnl = 0;
+            $prev_target = 0;
+            $current_target = 0;
+            $totalBasketPnl = 0;
+            $totalBasketInv = 0;
+            
+            $init_target = 0;
+            $stop_loss = 0;
+            $target_strike = 0;
              
              $init_target = $basket_data['init_target'];
              $stop_loss = $basket_data['stop_loss'];
@@ -135,6 +126,13 @@ class TickerController extends Controller
              $current_target = $basket_data['current_target'];
              
              foreach($basket_data['orders'] as $eachOrder){
+                 $average_price = 0;
+                $pnl = 0;
+                $orderPnl = 0;
+                $orderInvestment = 0;
+                $pnl_perc = 0;
+                $ltp = 0;
+                $qty =0;
                 
                  foreach($tickers as $eachTick){
                      
@@ -186,13 +184,19 @@ class TickerController extends Controller
                      
              }#Order for loop
              
-             if($totalBasketPnl > 100000){
+             
+             if($totalBasketPnl >= 100000){
                  $newbasketPnl = substr((string) round($totalBasketPnl),0, 3).'000';
-             }elseif($totalBasketPnl > 10000){
-                 $newbasketPnl = substr((string) round($totalBasketPnl),0, 2).'000';
+             }elseif($totalBasketPnl >= 10000){
+                 $newbasketPnl = substr((string) round($totalBasketPnl),0, 3).'00';
+             }elseif($totalBasketPnl >= 1000){
+                 $newbasketPnl = substr((string) round($totalBasketPnl),0, 2).'00';
+             }elseif(($totalBasketPnl >= 100) && ($totalBasketPnl < 1000)){
+                 $newbasketPnl = substr((string) round($totalBasketPnl),0, 1).'00';
              }else{
-                 $newbasketPnl = substr((string) round($totalBasketPnl),0, 1).'000';
+                 $newbasketPnl = 0;
              }
+             
              
              $newbasketPnl = (int) $newbasketPnl;
              
@@ -223,26 +227,23 @@ class TickerController extends Controller
                      
                  }
                  
-             $updateBasketStatus = Basket::where('id', $basket_data['id'])->first();
-             $updateBasketStatus['status'] = 'Squared';
-             $updateBasketStatus->save();
-                 
+                 $updateBasketStatus = Basket::where('id', $basket_data['id'])->first();
+                 $updateBasketStatus['status'] = 'Squared';
+                 $updateBasketStatus['Pnl'] = $totalBasketPnl;
+                 $updateBasketStatus->save();
              }
              
-             $updateBasketPnl = Basket::where('id', $basket_data['id'])->first();
-             $updateBasketPnl['Pnl'] = $totalBasketPnl;
-             $updateBasketPnl->save();
+             if($totalBasketPnl != 0){
+                 $updateBasketPnl = Basket::where('id', $basket_data['id'])->first();
+                 $updateBasketPnl['Pnl'] = $totalBasketPnl;
+                 $updateBasketPnl->save();
+             }
              
-               
          }#Basket for loop
         
-    //   $exist = Tick::where('status', 1)->get();
-    //   if($exist){
-    //       $deletable_data = Tick::where('status',1)->delete();
-    //   }
-    //         $data['properties'] = $request->input();
-    //         $product = Tick::create($data);
-           $data = Order::where('status','Active')->pluck('token_id');
+
+         $data = Order::where('status','Active')->pluck('token_id');
+        
         return $data;
     
     }

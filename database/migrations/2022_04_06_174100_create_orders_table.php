@@ -33,11 +33,14 @@ class CreateOrdersTable extends Migration
             $table->double('ltp')->nullable();
             $table->double('pnl')->nullable();
             $table->double('exit_price')->nullable();
+            $table->double('total_inv')->default('0');
+            $table->double('pnl_perc')->default('0');
             $table->integer('is_delete')->nullable();
             $table->timestamps();
             
             $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('baskets')->onDelete('cascade');
+
         });
 
         
