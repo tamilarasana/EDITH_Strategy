@@ -43,5 +43,5 @@ Route::group(['middleware' => 'auth'],function(){
     Route::get('/data-details',[HoldingsController::class,'getData'])->name('holdings.data');
     // Route::get('/holding/orders',[HoldingsController::class,'getHoldings'])->name('holdingslist.data');
     Route::get('detailedorder', 'App\Http\Controllers\OrderController@getAllOrder')->name('basket.data');
-    Route::get('/data-autocomplete',[InstrumentController::class,'autocomplete'])->name('autocomplete');
+    Route::post('/data-autocomplete',[InstrumentController::class,'autocomplete'])->name('autocomplete');
 });

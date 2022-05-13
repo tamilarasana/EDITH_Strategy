@@ -57,8 +57,8 @@ class InstrumentController extends Controller
      */
     public function autocomplete(Request $request)
     {
-        $q = Instrument::all();
-
+        
+        
         $search = $request['query'];
          
         //  dd($search);

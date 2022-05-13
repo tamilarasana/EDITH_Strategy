@@ -45,7 +45,8 @@ class BasketController extends Controller
      */
     public function store(Request $request)
     {
-         $basket = New Basket;
+        
+        $basket = New Basket;
         $basket->user_id = Auth::User()->id;
         $basket->basket_name = $request->basket_name;
         $basket->target_strike = $request->target_strike;

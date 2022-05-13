@@ -6,12 +6,11 @@
 	@yield('title')
 	</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	<!-- <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}"> -->   
+	<!-- <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}"> -->  
+    {{-- <meta name="csrf-token" content="{{ csrf_token() }}" />  --}}
 	<link rel="stylesheet" href="../assets1/css/new.css">
 	<link rel="stylesheet" href="../assets1/css/style.css">
-	<link rel="stylesheet" href="{{asset('assets/css/azzara.min.css')}}">
-
-    
+	<link rel="stylesheet" href="{{asset('assets/css/azzara.min.css')}}">    
 
 </head>
 <body>
@@ -79,7 +78,7 @@
 <script src="{{asset('assets/js/ready.min.js')}}"></script>
 
   <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
+  {{-- <link rel="stylesheet" href="/resources/demos/style.css"> --}}
 
     @yield('scripts')
 

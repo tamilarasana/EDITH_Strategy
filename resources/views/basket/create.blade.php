@@ -17,34 +17,34 @@
 					<div class="row">
 						<div class="col-md-4 mb-3">
 							<label class="mt-3 mb-3"><b>Basket Name</b></label>
-								<input id="inputFloatingLabel"  name ="basket_name" type="text" class="form-control input-border-bottom"  placeholder = "Basket Name" >
+								<input id="inputFloatingLabel"  name ="basket_name" type="text" class="form-control input-border-bottom"  placeholder = "Basket Name" required>
 						</div>
 						<div class="col-md-4 mb-3">
 								<label class="mt-3 mb-3"><b>Initial Target </b></label>
-									<input id="inputFloatingLabel"  name ="init_target" type="number" class="form-control input-border-bottom"  placeholder = "Init Target" >
+									<input id="inputFloatingLabel"  name ="init_target" type="number" class="form-control input-border-bottom"  placeholder = "Init Target" required>
 							</div>
 							
 							<div class="col-md-4 mb-3">
 								<label class="mt-3 mb-3"><b>Target Strike </b></label>
-									<input id="inputFloatingLabel"  name ="target_strike" type="number" class="form-control input-border-bottom"  placeholder = "Target Strike" >
+									<input id="inputFloatingLabel"  name ="target_strike" type="number" class="form-control input-border-bottom"  placeholder = "Target Strike" required>
 							</div>
 
 							<div class="col-md-4 mb-3">
 								<label class="mt-3 mb-3"><b>Stop Loss </b></label>
-									<input id="inputFloatingLabel"  name ="stop_loss" type="number" class="form-control input-border-bottom"  placeholder = "Stop Loss" >
+									<input id="inputFloatingLabel"  name ="stop_loss" type="number" class="form-control input-border-bottom"  placeholder = "Stop Loss" required>
 							</div>						
 						<div class="col-md-4 mb-3">
 							<label class="mt-3 mb-3"><b>Scheduled Start</b></label>
-								<input id="inputFloatingLabel"  name ="scheduled_exec" type="date" class="form-control input-border-bottom"  placeholder = "Scheduled Exc" >
+								<input id="inputFloatingLabel"  name ="scheduled_exec" type="date" class="form-control input-border-bottom"  placeholder = "Scheduled Exc" required>
 						</div>
 						<div class="col-md-4 mb-3">
 							<label class="mt-3 mb-3"><b>Scheduled Sq-off</b></label>
-								<input id="inputFloatingLabel"  name ="scheduled_sqoff" type="date" class="form-control input-border-bottom"  placeholder = "Scheduled_sq Off" >
+								<input id="inputFloatingLabel"  name ="scheduled_sqoff" type="date" class="form-control input-border-bottom"  placeholder = "Scheduled_sq Off" required>
 						</div>
 				
 						<div class="col-md-4 mb-3">
 							<label class="mt-3 mb-3"><b>Quantity</b></label>
-								<input id="inputFloatingLabel"  name ="qty" type="number" class="form-control input-border-bottom"  placeholder = "qty" >
+								<input id="inputFloatingLabel"  name ="qty" type="number" class="form-control input-border-bottom"  placeholder = "qty" required>
 						</div>
                        
 					</div>
@@ -55,7 +55,7 @@
 					    <!-- Button trigger modal -->
               <a class="btn btn-success" href="javascript:void(0)" id="createNewCustomer"> Create New STRATEGY</a>
             </div>
-            <div class="modal fade" id="ajaxModel" aria-hidden="true">
+            <div class="modal fade" data-keyboard="false" data-backdrop="static" id="ajaxModel" aria-hidden="true">
               <div class="modal-dialog">
                   <div style="width:550px; background-color:white" class="modal-content">
                       <div class="modal-header">
@@ -66,11 +66,11 @@
                           <!--<input id="search" style="height:30px; width:150px" type="text" placeholder="INDICES" name="indices" value="BANKNIFTY"/>-->
                           <!--<ul id="searchResult"></ul>-->
                           <!--<input style="height:30px; width:150px" type="text" placeholder="Expiry Ex. DDMMMYYYY" name="expiry" value="12MAY2022"/>-->
-                          <button type="button" name="add" id="add" class="btn-sm btn-success float-right">Add</button>
+                          <!--<button type="button" name="add" id="add" class="btn-sm btn-success float-right">Add</button>-->
                       <!--<hr>-->
                           <!--Make sure the form has the autocomplete function switched off:-->
                             <div class="autocomplete" style="width:300px;">
-                                <input id="myInput" type="text" name="myCountry" placeholder="Search Instrument...">
+                                <input id="myInput" type="text"  placeholder="Search Instrument...">
                                 <div class="autocomplete-items" id="results"></div>
                               </div>
                       </div>
@@ -78,19 +78,18 @@
                           <table class="table  table-condensed"  id="user_table">
                             <thead >
                                 <tr>
-                                  {{-- <div class"col-md-3 mb-3">
-                                    <input style="height:30px; width:150px" type="text" placeholder="TOKEN ID"/>
-                                    <input style="height:30px; width:150px" type="text" placeholder="STRIKE PRICE"/>
-                                    &nbsp;
-                                    <lable style="font-size:18px;font-weight:700">CE</lable>
-                                    &nbsp;
-                                    <lable style="font-size:18px;font-weight:700">Buy</lable>
-                                </div> --}}
                                 </tr>
                             </thead>
                             <tbody>
                             </tbody>
                         </table>
+                        <hr>
+                        <div class="col-sm float-sm-right">
+                            <button id="cancel" type="button" class="btn btn-warning">Cancel</button>
+                            <button id="clear" type="button" class="btn btn-primary">Clear</button>
+                            <button id="save" type="button" class="btn btn-success">Save</button>
+                        </div>
+                        <hr>
                         </div>
                   </div>
               </div>
@@ -98,7 +97,7 @@
     					<hr>			
 					<div class="col-md-3 mb-3 ">
 						<button class="btn btn-secondary" type="submit">Submit</button>
-                            <a href ="{{route('basket.index') }}" type="submit" class="btn btn-primary me-2">Cancel</a>
+            <a href ="{{route('basket.index') }}" type="submit" class="btn btn-primary me-2">Cancel</a>
 					</div>
 			</form>
 		</div>
@@ -112,24 +111,61 @@
 @endsection
 
 @section('scripts')
-<script>
-  $(document).ready(function(){
-    $('#createNewCustomer').click(function () {
-          $('#ajaxModel').modal('show');
-      });
 
-    $(document).on('click', '#add', function(){
-            count++;
-            dynamic_field(count);
+<script>
+
+  $(document).ready(function(){
+       $('#myInput').keyup(function(){ 
+            var query = $(this).val();
+              if((query != '') && (query.length > 4))
+              {
+                 var _token = $('input[name="_token"]').val();
+                  $.ajax({
+                      url:"{{ route('autocomplete') }}",
+                      method:"POST",
+                      data:{query:query, _token:_token},
+                      dataType: 'json',
+                      success:function(response){    
+                        console.log(response);        
+                        var len = response.length;
+                        $('#results').html('');
+                        for( var i = 0; i<len; i++){
+                            var id = response[i]['instrument_token'];
+                         
+                            var names = response[i]['tradingsymbol'];
+                            // var tradingsymbol = response[i]['tradingsymbol'];
+                            $('#results').append('<div onClick="on_click(\''+id+'\',\''+names+'\')">' + names + '</div>');
+                          }
+                          
+                        }
+                  });
+              }
+        });
+        
     });
 
+    </script>
+    <script>
+
+      $(document).ready(function(){
+        $('#createNewCustomer').click(function () {
+              $('#ajaxModel').modal('show');
+          })
+    });
+      function on_click(click_id, token_name){
+        var strike_type = token_name.slice(-2);
+        count++;
+        dynamic_field(count, click_id, token_name, strike_type);
+        $('#results').html('');
+      }
+
     var count = 1;
-    dynamic_field(count);
-      function dynamic_field(number){
+    // dynamic_field(count, click_id);
+      function dynamic_field(number, click_id, token_name, strike_type){
         html = '<tr>';
-                html += '<td> <label class="mt-1"><b>Token ID</b></label><div class="mt-1"> <input type="text"  style="height:30px; width:100px" name="data['+number+'][token_id]"  class="form-control " placeholder="Token ID" required /></div></td>';
-                html += '<td> <label class="mt-1 "><b>Token Strike</b></label><div class="mt-1"> <input type="text"  style="height:30px; width:100px" name="data['+number+'][token_strike]"  class="form-control input-border-bottom" placeholder="Token Strike" required /></div></td>';
-                html += '<td> <label class="mt-1 "><b>Strike Type</b></label><div class="mt-1"><select style="height:30px; width:80px" class="selectpicker" name="data['+number+'][strick_type]"><option>-Select-</option value="CE"><option>CE</option><option value="PE">PE</option></select></div></td>';
+                html += '<td> <div class="mt-1"> <input type="hidden"  style="height:30px; width:100px" name="data['+number+'][token_id]"  class="form-control " placeholder="Token ID" value="'+click_id+'" required /></div></td>';
+                html += '<td> <label class="mt-1 "><b>Token Strike</b></label><div class="mt-1"> <input type="text"  style="height:30px; width:180px" name="data['+number+'][token_strike]"  class="form-control input-border-bottom" placeholder="Token Strike" value="'+token_name+'" required /></div></td>';
+                html += '<td> <label class="mt-1 "><b>Strike Type</b></label><div class="mt-1"><select  style="height:30px; width:80px" class="selectpicker" name="data['+number+'][strick_type]"><option>'+strike_type+'</option value="CE"><option>CE</option><option value="PE">PE</option></select></div></td>';
                 html += '<td> <label class="mt-1 "><b>Order Type</b></label><div class="mt-1"><select style="height:30px; width:80px" class="selectpicker" name="data['+number+'][order_type]"><option>-Select-</option><option value="Buy">Buy</option><option  value="Sell">Sell</option></select></div></td>';
             if(number > 1)
             {
@@ -143,44 +179,25 @@
             }
       }
 
-      $(document).on('click', '.remove', function(){
-        count--;
-        $(this).closest("tr").remove();
-     });
-  });
+        $(document).on('click', '.remove', function(){
+          count--;
+          $(this).closest("tr").remove();
+      });
+      
 
-</script>
-
-
-<script>
-
-  $(document).ready(function(){
-       $('#myInput').keyup(function(){ 
-            var query = $(this).val();
-              if((query != '') && (query.length > 4))
-              {
-                 var _token = $('input[name="_token"]').val();
-                  $.ajax({
-                      url:"{{ route('autocomplete') }}",
-                      method:"GET",
-                      data:{query:query, _token:_token},
-                      dataType: 'json',
-                      success:function(response){    
-                        console.log(response);
-        
-                        var len = response.length;
-                        $('#results').html('');
-                        for( var i = 0; i<len; i++){
-                            var id = response[i]['tradingsymbol'];
-                            $('#results').append('<div>' + id + '</div>');
-                          }
-                          
-                        }
-                  });
-              }
+        $('#cancel').click(function () {
+            $('tbody').html('');
+            $('#ajaxModel').modal('hide');
         });
         
-    });
+        $('#clear').click(function () {
+            $('tbody').html('');
+        });
+        
+        $('#save').click(function () {
+            $('#ajaxModel').modal('hide');
+        });
+
 
     </script>
     
