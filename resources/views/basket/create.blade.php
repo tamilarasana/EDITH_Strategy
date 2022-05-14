@@ -52,7 +52,6 @@
 					<div class"col-md-3 mb-3">
 					    <label style="font-size:15px; color:black; font-weight:800">SELECT THE OPTIONS STRATEGY OR EQUITY</label>
 					    &nbsp;&nbsp;
-					    <!-- Button trigger modal -->
               <a class="btn btn-success" href="javascript:void(0)" id="createNewCustomer"> Create New STRATEGY</a>
             </div>
             <div class="modal fade" data-keyboard="false" data-backdrop="static" id="ajaxModel" aria-hidden="true">
@@ -67,8 +66,6 @@
                           <!--<ul id="searchResult"></ul>-->
                           <!--<input style="height:30px; width:150px" type="text" placeholder="Expiry Ex. DDMMMYYYY" name="expiry" value="12MAY2022"/>-->
                           <!--<button type="button" name="add" id="add" class="btn-sm btn-success float-right">Add</button>-->
-                      <!--<hr>-->
-                          <!--Make sure the form has the autocomplete function switched off:-->
                             <div class="autocomplete" style="width:300px;">
                                 <input id="myInput" type="text"  placeholder="Search Instrument...">
                                 <div class="autocomplete-items" id="results"></div>
@@ -133,7 +130,6 @@
                             var id = response[i]['instrument_token'];
                          
                             var names = response[i]['tradingsymbol'];
-                            // var tradingsymbol = response[i]['tradingsymbol'];
                             $('#results').append('<div onClick="on_click(\''+id+'\',\''+names+'\')">' + names + '</div>');
                           }
                           
