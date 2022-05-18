@@ -103,9 +103,7 @@ strategy
 							</div>			
 							<div class="col-md-4 mb-3">
 								<label class="mt-3 mb-3"><b>Quantity </b></label>
-								{{-- <div class="col-sm-6"> --}}
 									<input id="inputFloatingLabel"  name ="qty" type="number" class="form-control input-border-bottom"  placeholder = "Quantity" required>
-								{{-- </div> --}}
 							</div>			
 							<div class="col-md-4 mb-3">
 								<label class="mt-3 mb-3"><b>Status </b></label>

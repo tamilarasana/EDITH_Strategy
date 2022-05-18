@@ -12,7 +12,7 @@ Basket
             <div class="card">
                 <div class="card-header">
                     <p class="card-description">E.D.I.T.H AI Trading Software.</p>
-                    <a href="{{route('basket.create')}}" class="btn btn-primary btn-round float-end">Add</i>
+                    <a href="{{route('basket.create')}}" class="btn btn-primary btn-round float-right">Create Basket</i>
                     </a>
                 </div>
                 <div class="card-body">

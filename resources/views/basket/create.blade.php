@@ -79,7 +79,7 @@
                                             <!--<input style="height:30px; width:150px" type="text" placeholder="Expiry Ex. DDMMMYYYY" name="expiry" value="12MAY2022"/>-->
                                             <!--<button type="button" name="add" id="add" class="btn-sm btn-success float-right">Add</button>-->
                                             <div class="autocomplete" style="width:300px;">
-                                                <input id="myInput" type="text" placeholder="Search Instrument...">
+                                                <input id="myInput" type="text" placeholder="Search Instrument.Ex.Reliance..">
                                                 <div class="autocomplete-items" id="results"></div>
                                             </div>
                                         </div>
@@ -202,8 +202,10 @@
 
         $('#save').click(function() {
            var token_items = decodeURIComponent($('form').serialize());     
-           if(token_items.search("empty") > 0 || token_items.search("token_id") < 0){
-            alert("Please create the Strategy properly..!!");
+           if(token_items.search("empty") > 0){
+            alert("Please select the Order Type..!!");
+           }else if(token_items.search("token_id") < 0){
+               alert("Stock Instrument Cannot be empty..!!");
            }else{
             $('#ajaxModel').modal('hide');
             document.getElementById("savebasket").disabled = false;
@@ -249,7 +251,7 @@
             border-bottom: none;
             border-top: none;
             z-index: 99;
-            /*position the autocomplete items to be the same width as the container:*/
+            /position the autocomplete items to be the same width as the container:/
             top: 100%;
             left: 0;
             right: 0;
@@ -263,12 +265,12 @@
         }
 
         .autocomplete-items div:hover {
-            /*when hovering an item:*/
+            /when hovering an item:/
             background-color: #e9e9e9;
         }
 
         .autocomplete-active {
-            /*when navigating through the items using the arrow keys:*/
+            /when navigating through the items using the arrow keys:/
             background-color: DodgerBlue !important;
             color: #ffffff;
         }
