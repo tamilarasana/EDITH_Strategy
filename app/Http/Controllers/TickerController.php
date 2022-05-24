@@ -96,7 +96,7 @@ class TickerController extends Controller
     //     return response()->json(['message' => 'stored Successfully', 'data'=> $product]);
     
     
-       $basketList = Basket::with(['orders' => function ($query) {
+       $basketList = Basket::where('status','Active')->with(['orders' => function ($query) {
                                 $query->where('status','Active');
                     
                 }])->get();
@@ -118,15 +118,19 @@ class TickerController extends Controller
             $init_target = 0;
             $stop_loss = 0;
             $target_strike = 0;
+            $max_target_achived = 0;
+            
              
              $init_target = $basket_data['init_target'];
              $stop_loss = $basket_data['stop_loss'];
              $target_strike = $basket_data['target_strike'];
              $prev_target = $basket_data['prev_current_target'];
              $current_target = $basket_data['current_target'];
+             $max_target_achived = $basket_data['max_target_achived'];
+
              
              foreach($basket_data['orders'] as $eachOrder){
-                 $average_price = 0;
+                $average_price = 0;
                 $pnl = 0;
                 $orderPnl = 0;
                 $orderInvestment = 0;
@@ -163,7 +167,10 @@ class TickerController extends Controller
                         }
                         $orderPnl = $pnl * $qty;
                         $orderInvestment = $qty * $average_price;
-                        $pnl_perc = $orderPnl / $orderInvestment;
+                        
+                        if($orderPnl != 0 && $orderInvestment != 0){
+                            $pnl_perc = $orderPnl / $orderInvestment;
+                        };
                         
                         $totalBasketPnl += $orderPnl;
                         $totalBasketInv += $orderInvestment;
@@ -197,6 +204,15 @@ class TickerController extends Controller
                  $newbasketPnl = 0;
              }
              
+             #Max Target Acheived Function
+             
+             if(($totalBasketPnl != 0) and ($max_target_achived < $totalBasketPnl)){
+                 
+                 $updateMaxPnl = Basket::where('id', $basket_data['id'])->first();
+                 $updateMaxPnl['max_target_achived'] = $totalBasketPnl;
+                 $updateMaxPnl->save();
+                 
+             }
              
              $newbasketPnl = (int) $newbasketPnl;
              
@@ -216,6 +232,7 @@ class TickerController extends Controller
                  
              }
              
+             #Target Square function
              
              if(($prev_target != 0) and ($totalBasketPnl != 0) and ($current_target != 0) and ($totalBasketPnl < $prev_target)){
                  
@@ -229,6 +246,24 @@ class TickerController extends Controller
                  
                  $updateBasketStatus = Basket::where('id', $basket_data['id'])->first();
                  $updateBasketStatus['status'] = 'Squared';
+                 $updateBasketStatus['Pnl'] = $totalBasketPnl;
+                 $updateBasketStatus->save();
+             }
+             
+             #SL Square Funtion
+             
+             if((-abs($stop_loss) > $totalBasketPnl) and ($totalBasketPnl != 0) and ($stop_loss != 0)){
+                 
+                 foreach($basket_data['orders'] as $basket_orders){
+                     
+                     $updateOrderData = Order::where('id', $basket_orders['id'])->first();
+                     $updateOrderData['status'] = 'Squared-SL';
+                     $updateOrderData->save();
+                     
+                 }
+                 
+                 $updateBasketStatus = Basket::where('id', $basket_data['id'])->first();
+                 $updateBasketStatus['status'] = 'Squared-SL';
                  $updateBasketStatus['Pnl'] = $totalBasketPnl;
                  $updateBasketStatus->save();
              }

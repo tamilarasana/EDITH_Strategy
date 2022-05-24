@@ -6,17 +6,18 @@
 	@yield('title')
 	</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	<!-- <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}"> -->  
-    {{-- <meta name="csrf-token" content="{{ csrf_token() }}" />  --}}
+	<!-- <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}"> -->   
 	<link rel="stylesheet" href="../assets1/css/new.css">
 	<link rel="stylesheet" href="../assets1/css/style.css">
-	<link rel="stylesheet" href="{{asset('assets/css/azzara.min.css')}}">    
+	<link rel="stylesheet" href="{{asset('assets/css/azzara.min.css')}}">
+
+    
 
 </head>
 <body>
     <div class="container-fluid"> 
     <nav class="navbar navbar-expand-sm navbar-light ">
-        <a class="navbar-brand" style="cursor: pointer; font-size:25px" href="#"><b>E.D.I.T.H</b></a>
+        <a class="navbar-brand" style="cursor: pointer; font-size:25px" href="/home"><b>E.D.I.T.H</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -25,7 +26,32 @@
             <ul class="navbar-nav navbar-nav-right ml-auto">
                 <li class="nav-item ">
                     <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >
-                        Positions
+                        <b>Strategy</b>
+                    </a>            
+                </li>
+                 <li class="nav-item ">
+                    <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >
+                        <b>Option Chain</b>
+                    </a>            
+                </li>
+                 <li class="nav-item ">
+                    <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >
+                        <b>Live Market</b>
+                    </a>            
+                </li>
+                 <li class="nav-item ">
+                    <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >
+                        <b>History</b>
+                    </a>            
+                </li>
+                 <li class="nav-item ">
+                    <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >
+                        <b>About Us</b>
+                    </a>            
+                </li>
+                 <li class="nav-item ">
+                    <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >
+                        <b>Faq</b>
                     </a>            
                 </li>
                 {{-- <li class="nav-item active">
@@ -58,7 +84,7 @@
         </div>
       </nav>
     </div>
-        <div class="content">
+         <div class="content">
             @yield('content')
         </div>
     <script src="{{asset('assets/js/core/jquery.3.2.1.min.js')}}"></script>

@@ -30,6 +30,7 @@ class CreateBasketsTable extends Migration
             $table->double('init_target')->default('0');
             $table->double('current_target')->default('0');
             $table->double('target_strike')->default('0');
+            $table->double('max_target_achived')->default('0');
             $table->double('stop_loss')->default('0');
             $table->string('status')->nullable();
             $table->text('fb_token')->nullable();

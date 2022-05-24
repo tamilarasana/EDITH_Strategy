@@ -26,6 +26,7 @@ class Basket extends Model
         'recorring',
         'weekDays', 
         'strategy',
+        'max_target_achived',
         'qty',
         'Pnl',
         'Pnl_perc',
