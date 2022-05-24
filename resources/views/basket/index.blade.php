@@ -28,6 +28,7 @@ Basket
 									<th><b>Target Strike</b></th>
 									<th><b>Stop Loss</b></th>
 									<th><b>Current Target</b></th>
+									<th><b>Max Trend</b></th>
 									<th><b>Status</b></th>
 									<th><b>Total PNL</b></th>
                                     <!--<th><b> Scheduled Exc</b></th>-->
@@ -82,7 +83,7 @@ Basket
 				        
 				        
 				        
-				    $("#basketList").append('<tr id="record" style="background-color:rgb(252, 252, 252)"><td>'+value.basket_name+'</td><td>'+created_at+'</td><td>'+updated_at+'</td><td>'+value.init_target+'</td><td>'+value.target_strike+'</td><td>'+value.stop_loss+'</td><td>'+value.prev_current_target+'</td><td>'+value.status+'</td><td>'+value.Pnl.toFixed(2)+'</td><td>'+value.qty+'</td><td><button class= "btn btn-warning edit_data" id="show" data-id='+value.id+'> View </button>&nbsp;<button class= "btn btn-success" id="squareoffdata" data-id='+value.id+'> SquareOff </button></td></tr>');
+				    $("#basketList").append('<tr id="record" style="background-color:rgb(252, 252, 252)"><td>'+value.basket_name+'</td><td>'+created_at+'</td><td>'+updated_at+'</td><td>'+value.init_target+'</td><td>'+value.target_strike+'</td><td>'+value.stop_loss+'</td><td>'+value.prev_current_target+'</td><td>'+value.max_target_achived+'</td><td>'+value.status+'</td><td>'+value.Pnl.toFixed(2)+'</td><td>'+value.qty+'</td><td><button class= "btn btn-warning edit_data" id="show" data-id='+value.id+'> View </button>&nbsp;<button class= "btn btn-success" id="squareoffdata" data-id='+value.id+'> SquareOff </button></td></tr>');
 				    
 				    if(bskStatus == "Active"){
 				            $("#record").css({'background-color':'rgb(230, 255, 230)'});
