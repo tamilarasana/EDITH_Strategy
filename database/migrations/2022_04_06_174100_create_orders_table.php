@@ -17,21 +17,21 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('basket_id');
-            $table->string('token_name');
-            $table->bigInteger('token_id');
-            $table->string('leg_type');
-            $table->integer('qty');
-            $table->string('status');
+            $table->string('token_name')->nullable();
+            $table->bigInteger('token_id')->nullable();
+            $table->string('leg_type')->nullable();
+            $table->integer('qty')->nullable();
+            $table->string('status')->nullable();
             $table->double('delta')->nullable();
             $table->double('theta')->nullable();
             $table->double('vega')->nullable();
             $table->double('gamma')->nullable();
-            $table->string('order_type');
+            $table->string('order_type')->nullable();
             $table->bigInteger('order_id')->nullable();
-            $table->dateTime('order_date_time', 0)->nullable();
-            $table->string('order_avg_price', 0)->nullable();
-            $table->double('ltp')->nullable();
-            $table->double('pnl')->nullable();
+            $table->dateTime('order_date_time',0)->nullable();
+            $table->string('order_avg_price',0)->nullable();
+            $table->double('ltp')->default('0');
+            $table->double('pnl')->default('0');
             $table->double('exit_price')->nullable();
             $table->double('total_inv')->default('0');
             $table->double('pnl_perc')->default('0');
@@ -39,7 +39,7 @@ class CreateOrdersTable extends Migration
             $table->timestamps();
             
             $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('baskets')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
         });
 

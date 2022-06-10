@@ -5,6 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TickerController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\BasketController;
+use App\Http\Controllers\InstrumentController;
+use App\Http\Controllers\ReportController;
+
+use App\Http\Controllers\Webhook\WebhookController;
+
 
 
 /*
@@ -29,4 +34,14 @@ Route::get('orders', 'App\Http\Controllers\TickerController@getOrder');
 Route::get('detailedorder', 'App\Http\Controllers\OrderController@getAllOrder');
 
 Route::resource('basket', BasketController::class);
-// Route::post('basketUpdate',[BasketController::class, 'updateBasket']);
+Route::post('webhook/{id}', 'App\Http\Controllers\Webhook\WebhookUpdateController@hookCall');
+
+Route::get('instrumentupdate',[InstrumentController::class, 'index']);
+
+Route::get('reportdata',[ReportController::class, 'index']);
+Route::get('reports',[ReportController::class, 'reports']);
+
+
+
+
+

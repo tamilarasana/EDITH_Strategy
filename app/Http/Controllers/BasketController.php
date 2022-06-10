@@ -45,7 +45,7 @@ class BasketController extends Controller
      */
     public function store(Request $request)
     {
-        
+        // dd($request->all());
         $basket = New Basket;
         $basket->user_id = Auth::User()->id;
         $basket->basket_name = $request->basket_name;
@@ -58,11 +58,14 @@ class BasketController extends Controller
         $basket->weekDays = $request->weekDays;
         $basket->strategy = $request->strategy;
         $basket->qty = $request->qty;
+        $basket->created_by = "Self";
         $basket->status = "Active"; # Status as per the Scheduled Basket..
+        $basket->intra_mis = $request->ORDER_TYPE; 
         $basket->save();
        
 
         $test = $request->data;
+        
         foreach($test as $tes){
        
             $order = New Order;
@@ -70,7 +73,7 @@ class BasketController extends Controller
             $order->basket_id = $basket->id;
             $order->qty = $request->qty;
             $order->token_id = $tes['token_id'];
-            $order->token_name = $request['indices'].$tes['token_strike'].$tes['strick_type'];
+            $order->token_name = $request['indices'].$tes['token_strike'];
             $order->order_type = $tes['order_type'];
             $order->status = "Active"; # Status as per the Scheduled Orders..
             $order->save();    
@@ -112,7 +115,6 @@ class BasketController extends Controller
     public function update(Request $request, $id)
     {
           $order = Basket::findOrFail($id);
-        //   dd($request);
           if($request->has('stop_loss')){
          $order['stop_loss'] = $request->stop_loss;
           }
@@ -134,6 +136,9 @@ class BasketController extends Controller
           if($request->has('init_target')){
          $order['init_target'] = $request->init_target;
           }
+          if($request->has('max_target_achived')){
+            $order['max_target_achived'] = $request-> max_target_achived ;
+            }
               if($request->has('stop_loss')){
          $order['stop_loss'] = $request->stop_loss;
               }

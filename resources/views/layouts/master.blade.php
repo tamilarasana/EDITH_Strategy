@@ -6,12 +6,21 @@
 	@yield('title')
 	</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	<!-- <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}"> -->   
-	<link rel="stylesheet" href="../assets1/css/new.css">
-	<link rel="stylesheet" href="../assets1/css/style.css">
+	<!-- <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}"> -->  
+    {{-- <meta name="csrf-token" content="{{ csrf_token() }}" />  --}}
+	<!--<link rel="stylesheet" href="../assets1/css/new.css">-->
+	<!--<link rel="stylesheet" href="../assets1/css/style.css">-->
+	
+	
+    <link rel="stylesheet" href="{{asset('assets1/css/new.css')}}">
+	<link rel="stylesheet" href="{{asset('assets1/css/style.css')}}">
+
 	<link rel="stylesheet" href="{{asset('assets/css/azzara.min.css')}}">
+{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>     
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>  --}}
 
     
+
 
 </head>
 <body>
@@ -24,26 +33,32 @@
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav navbar-nav-right ml-auto">
+                 <li class="nav-item ">
+                    <a class="font-weight-medium btn-sm" href="{{route('history.index')}}" >
+                        <b>Dashboard</b>
+                    </a>            
+                </li>
                 <li class="nav-item ">
                     <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >
-                        <b>Strategy</b>
+
+                        <b>Basket</b>
                     </a>            
                 </li>
-                 <li class="nav-item ">
-                    <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >
-                        <b>Option Chain</b>
+                <li class="nav-item ">
+                    <a class="font-weight-medium btn-sm" href="{{route('webhook.index')}}" >
+                        <b>Web Hook</b>
                     </a>            
                 </li>
-                 <li class="nav-item ">
-                    <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >
-                        <b>Live Market</b>
-                    </a>            
-                </li>
-                 <li class="nav-item ">
-                    <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >
-                        <b>History</b>
-                    </a>            
-                </li>
+                <!-- <li class="nav-item ">-->
+                <!--    <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >-->
+                <!--        <b>Live Market</b>-->
+                <!--    </a>            -->
+                <!--</li>-->
+                <!-- <li class="nav-item ">-->
+                <!--    <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >-->
+                <!--        <b>History</b>-->
+                <!--    </a>            -->
+                <!--</li>-->
                  <li class="nav-item ">
                     <a class="font-weight-medium btn-sm" href="{{route('basket.index')}}" >
                         <b>About Us</b>
@@ -54,6 +69,7 @@
                         <b>Faq</b>
                     </a>            
                 </li>
+
                 {{-- <li class="nav-item active">
                     <a class=" font-weight-medium btn-sm" href="{{route('orders.index')}}" >
                     orders
@@ -72,12 +88,16 @@
                         <a class="dropdown-item " href="{{ route('logout') }}"
                             onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
-                                <p class="text-danger text-center"><b> {{ __('Logout') }} </b></p>
+                                <p class="btn-sm btn-danger text-center"><b> {{ __('Logout') }} </b></p>
                             
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
+
+                        <a href="{{ route('registers') }}"  style="  margin-left: 40px;"  class="btn-sm btn-secondary ">Register</a>
+
+                        
                     </div>
                 </li>     
           </ul>          

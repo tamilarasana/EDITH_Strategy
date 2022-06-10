@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Tick;
 use App\Models\Order;
 use App\Models\Basket;
+use App\Models\Webhook;
 use Illuminate\Http\Request;
 use KiteConnect\KiteConnect;
 
@@ -86,6 +87,7 @@ class TickerController extends Controller
      */
     public function store(Request $request)
     {
+        
     //   $exist = Tick::where('status', 1)->get();
     //   if($exist){
     //       $deletable_data = Tick::where('status',1)->delete();
@@ -96,16 +98,17 @@ class TickerController extends Controller
     //     return response()->json(['message' => 'stored Successfully', 'data'=> $product]);
     
     
+
        $basketList = Basket::where('status','Active')->with(['orders' => function ($query) {
                                 $query->where('status','Active');
                     
                 }])->get();
         $tickers = $request->all();
-        // dd($tickers);
-        
         
         
          $b_list = json_decode($basketList,true);
+         
+        //  dd($b_list);
         
          foreach($b_list as $basket_data){
              
@@ -118,19 +121,29 @@ class TickerController extends Controller
             $init_target = 0;
             $stop_loss = 0;
             $target_strike = 0;
+
             $max_target_achived = 0;
             
-             
+            $order_type = "MIS";
+            
              $init_target = $basket_data['init_target'];
              $stop_loss = $basket_data['stop_loss'];
              $target_strike = $basket_data['target_strike'];
              $prev_target = $basket_data['prev_current_target'];
              $current_target = $basket_data['current_target'];
              $max_target_achived = $basket_data['max_target_achived'];
-
+             
+             $order_type = $basket_data['intra_mis'];
+            
+             $webhook_id = $basket_data['webhook_id'];
+            //  dd($webhook_id);
              
              foreach($basket_data['orders'] as $eachOrder){
+
+                 $average_price = 0;
+
                 $average_price = 0;
+
                 $pnl = 0;
                 $orderPnl = 0;
                 $orderInvestment = 0;
@@ -207,16 +220,15 @@ class TickerController extends Controller
              #Max Target Acheived Function
              
              if(($totalBasketPnl != 0) and ($max_target_achived < $totalBasketPnl)){
-                 
                  $updateMaxPnl = Basket::where('id', $basket_data['id'])->first();
-                 $updateMaxPnl['max_target_achived'] = $totalBasketPnl;
+                 $updateMaxPnl['max_target_achived'] = round($totalBasketPnl);
                  $updateMaxPnl->save();
-                 
              }
+             
              
              $newbasketPnl = (int) $newbasketPnl;
              
-             if(($totalBasketPnl > $init_target) and ($totalBasketPnl != 0) and ($init_target !=0)){
+             if(($totalBasketPnl >= $init_target) and ($totalBasketPnl != 0) and ($init_target !=0)){
                  $current_target = $newbasketPnl - $target_strike;
                  
                  $updateBasketData = Basket::where('id', $basket_data['id'])->first();
@@ -231,6 +243,7 @@ class TickerController extends Controller
                  $updateBasketData->save();
                  
              }
+            
              
              #Target Square function
              
@@ -248,8 +261,26 @@ class TickerController extends Controller
                  $updateBasketStatus['status'] = 'Squared';
                  $updateBasketStatus['Pnl'] = $totalBasketPnl;
                  $updateBasketStatus->save();
+                 
+                 
+                 #Update the Webhook Status to wating for another call...
+                 
+                 if($webhook_id != null){
+                     $hook = Webhook::find($webhook_id);
+                     if($hook->recurring == "Yes"){
+                         $hook->status = 'Waiting for call';
+                         $hook->update();
+                     }else{
+                         $hook->status = 'Squared';
+                         $hook->update();
+                     }
+                 }
+                 
+                 
              }
              
+             
+
              #SL Square Funtion
              
              if((-abs($stop_loss) > $totalBasketPnl) and ($totalBasketPnl != 0) and ($stop_loss != 0)){
@@ -266,19 +297,74 @@ class TickerController extends Controller
                  $updateBasketStatus['status'] = 'Squared-SL';
                  $updateBasketStatus['Pnl'] = $totalBasketPnl;
                  $updateBasketStatus->save();
+                 
+                 
+                 
+                 #Update the Webhook Status to wating for another call...
+                 
+                    if($webhook_id != null){
+                     $hook = Webhook::find($webhook_id);
+                     if($hook->recurring == "Yes"){
+                         $hook->status = 'Waiting for call';
+                         $hook->update();
+                     }else{
+                         $hook->status = 'Squared';
+                         $hook->update();
+                     }
+                 }
+                 
              }
              
-             if($totalBasketPnl != 0){
+            #Day End Squeroff
+             
+            date_default_timezone_set('Asia/kolkata');   
+            $currentTime = strtotime(date("H:i"));
+            $expire_time = "15:15";
+            $expire_times = strtotime($expire_time);
+            
+            if(($currentTime > $expire_times) and ($order_type == "MIS")){
+                
+                 foreach($basket_data['orders'] as $basket_orders){
+                     
+                     $updateOrderData = Order::where('id', $basket_orders['id'])->first();
+                     $updateOrderData['status'] = 'Squared-MIS';
+                     $updateOrderData->save();
+                     
+                 }
+                 
+                 $updateBasketStatus = Basket::where('id', $basket_data['id'])->first();
+                 $updateBasketStatus['status'] = 'Squared-MIS';
+                 $updateBasketStatus['Pnl'] = $totalBasketPnl;
+                 $updateBasketStatus->save();
+                 
+                 
+                 
+                 #Update the Webhook Status to wating for another call...
+                 
+                    if($webhook_id != null){
+                     $hook = Webhook::find($webhook_id);
+                     if($hook->recurring == "Yes"){
+                         $hook->status = 'Waiting for call';
+                         $hook->update();
+                     }else{
+                         $hook->status = 'Squared-MIS';
+                         $hook->update();
+                     }
+                 }
+            }
+            
+            if($totalBasketPnl != 0){
                  $updateBasketPnl = Basket::where('id', $basket_data['id'])->first();
                  $updateBasketPnl['Pnl'] = $totalBasketPnl;
                  $updateBasketPnl->save();
              }
              
+
          }#Basket for loop
         
 
          $data = Order::where('status','Active')->pluck('token_id');
-        
+
         return $data;
     
     }

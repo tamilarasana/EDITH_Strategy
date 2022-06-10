@@ -37,6 +37,15 @@
                                         class="form-control input-border-bottom" placeholder="Stop Loss" required>
                                 </div>
 
+                                <div id="intra_mis" class="col-sm-4 col-md-4 col-xs-12 mb-3"> 
+                                        <label class="mt-3 mb-3"><b> Orders Type </b></label>
+                                        <select  class="form-control has-error" name="ORDER_TYPE" id="intra_misOps" required>
+                                            <option value="">Select Order Type</option>
+                                            <option value="CNC">CNC</option>
+                                            <option value="MIS">MIS</option>
+                                        </select>
+                                </div>
+
                                 <div class="col-md-4 mb-3">
                                     <label class="mt-3 mb-3"><b>Scheduled Start</b></label>
                                     <input id="inputFloatingLabel" name="scheduled_exec" type="date"
@@ -102,6 +111,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                         <hr>
                         <div class="col-md-3 mb-3 ">
@@ -116,6 +126,7 @@
 @endsection
 
 @section('scripts')
+
     <script>
         $(document).ready(function() {
             $('#myInput').keyup(function() {
@@ -177,15 +188,18 @@
                     '<td><button type="button" name="remove" id="" class="btn btn-danger btn-sm remove">X</button></td></tr>';
                 $('#s_body').append(html);
             } else {
+
                 html += '<td></td></tr>';
                 $('#s_body').html(html);
             }
         }
 
+
         $(document).on('click', '.remove', function() {
             count--;
             $(this).closest("tr").remove();
         });
+
 
 
         $('#cancel').click(function() {

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Basket;
+use Illuminate\Http\Request;
+use App\Models\Webhookbasket;
 use Illuminate\Support\Facades\Auth;
+
 class OrderController extends Controller
 {
     
@@ -87,15 +89,24 @@ class OrderController extends Controller
     
     public function getAllOrder()
     {
-        // $data = Order::with('basket')->where('status','Active')->get();
-        // return response()->json(['status'=>200,'data'=>$data]);
+
         $user = Auth::User();
         $user_id = $user->id;
-                $data = Basket::where('user_id',$user_id)->orderBy('updated_at', 'DESC')->with(['orders' => function ($query) {
-                                $query->where('status','Active');
-                    
-                }])->get();
+                $data = Basket::where('user_id', $user_id)->orderBy('status', 'ASC')->orderBy('created_at', 'DESC')->with('orders')->get();
                 
+                                // $data = Basket::where('user_id', $user_id)->orderBy('status', 'ASC')->orderBy('created_at', 'DESC')->with(['orders' => function ($query) {$query->where('status', '=', 'Active');}])->get();
+
+        return response()->json(['status'=>200,'data'=>$data]);
+
+    }
+
+    public function getAllWebhookOrder()
+    {
+
+        $user = Auth::User();
+        $user_id = $user->id;
+        $data = Webhookbasket::where('user_id',$user_id)->orderBy('updated_at', 'DESC')->with('webhook')->get();
+               
         return response()->json(['status'=>200,'data'=>$data]);
 
     }
@@ -109,24 +120,22 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-         $order = Order::findOrFail($id);
+         $order = Order::findOrFail($id);         
+        if($request->has('ltp')){
+             $order['ltp'] = $request->ltp;
+        }
+        if($request->has('order_avg_price')){
+            $order['order_avg_price'] = $request->order_avg_price;
+        }
          
-          if($request->has('ltp')){
-         $order['ltp'] = $request->ltp;
+        if($request->has('pnl')){
+            $order['pnl'] = $request->pnl;
           }
-         
-          if($request->has('order_avg_price')){
-         $order['order_avg_price'] = $request->order_avg_price;
+        if($request->has('pnl_perc')){
+            $order['pnl_perc'] = $request->pnl_perc;
           }
-         
-          if($request->has('pnl')){
-         $order['pnl'] = $request->pnl;
-          }
-          if($request->has('pnl_perc')){
-         $order['pnl_perc'] = $request->pnl_perc;
-          }
-         if($request->has('status')){
-         $order['status'] = $request->status;    
+        if($request->has('status')){
+            $order['status'] = $request->status;    
          }
           if($request->has('total_inv')){
          $order['total_inv'] = $request->total_inv;
@@ -167,4 +176,6 @@ class OrderController extends Controller
             $ord->save();
         }
     }
+
+
 }

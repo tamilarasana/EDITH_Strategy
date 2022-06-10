@@ -75,7 +75,7 @@ class HoldingsController extends Controller
         $ordered = Order::pluck('token_id');
         $tick = Tick::get('properties');
         $tt = json_decode($tick,true);
-        $td = $tt[0];
+        // $td = $tt[0];
 
         $user = Auth::user();
         $user_id = $user->id;

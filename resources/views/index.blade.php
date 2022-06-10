@@ -17,7 +17,7 @@ Practice as much as you can to become a smart and profitable trader</h4>
 				<br>
 				<br>
 				<div class="col-md-12 text-center">
-					<a href="{{ route('basket.index') }}" class="btn btn-sm btn-info btn-center">GET STARTED</a>
+					<a href="{{ route('history.index') }}" class="btn btn-xl btn btn-warning btn-center">DASHBOARD</a>
 				</div>
 			</div>
 		</div>

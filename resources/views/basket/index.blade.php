@@ -12,7 +12,9 @@ Basket
             <div class="card">
                 <div class="card-header">
                     <p class="card-description">E.D.I.T.H AI Trading Software.</p>
+
                     <a href="{{route('basket.create')}}" class="btn btn-primary btn-round float-right">Create Basket</i>
+
                     </a>
                 </div>
                 <div class="card-body">
@@ -23,7 +25,8 @@ Basket
                                 <tr style="background-color:rgb(242, 242, 242)">
                                     <th><b> Basket Name</b></th>
                                     <th><b>Created At</b></th>
-                                    <th><b>Updated At</b></th>
+                                    <!--<th><b>Updated At</b></th>-->
+                                    <th><b>Order Type</b></th>
                                     <th><b>Init Target</b></th>
 									<th><b>Target Strike</b></th>
 									<th><b>Stop Loss</b></th>
@@ -74,17 +77,14 @@ Basket
 			    $('#basketList').html('');
 			    
 				$.each(result.data, function (key, value){
-				        // console.log(value.target_strike);
 				        var created  = new Date(value.created_at);
 				        created_at = created.toLocaleString("en-US")
 				        var updated = new Date(value.updated_at);
 				        updated_at = updated.toLocaleString("en-US");
 				        var bskStatus = value.status;
 				        
-				        
-				        
-				    $("#basketList").append('<tr id="record" style="background-color:rgb(252, 252, 252)"><td>'+value.basket_name+'</td><td>'+created_at+'</td><td>'+updated_at+'</td><td>'+value.init_target+'</td><td>'+value.target_strike+'</td><td>'+value.stop_loss+'</td><td>'+value.prev_current_target+'</td><td>'+value.max_target_achived+'</td><td>'+value.status+'</td><td>'+value.Pnl.toFixed(2)+'</td><td>'+value.qty+'</td><td><button class= "btn btn-warning edit_data" id="show" data-id='+value.id+'> View </button>&nbsp;<button class= "btn btn-success" id="squareoffdata" data-id='+value.id+'> SquareOff </button></td></tr>');
-				    
+				    $("#basketList").append('<tr id="record" style="background-color:rgb(252, 252, 252)"><td>'+value.basket_name+'</td><td>'+created_at+'</td><td>'+value.intra_mis+'</td><td>'+value.init_target+'</td><td>'+value.target_strike+'</td><td>'+value.stop_loss+'</td><td>'+value.prev_current_target+'</td><td>'+value.max_target_achived+'</td><td>'+value.status+'</td><td>'+value.Pnl.toFixed(2)+'</td><td>'+value.qty+'</td><td><button class= "btn btn-warning edit_data" id="show" data-id='+value.id+'> View </button>&nbsp;<button class= "btn btn-success" id="squareoffdata" data-id='+value.id+'> SquareOff </button></td></tr>');
+
 				    if(bskStatus == "Active"){
 				            $("#record").css({'background-color':'rgb(230, 255, 230)'});
 				            $("#record").css({'font-weight':'700'});

@@ -88,7 +88,6 @@ strategy
 				//maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 				});
 				$.each(result.order, function (key, value){
-				// 	console.log(value);
 				totalinv += value.total_inv
 				totalPnl += value.pnl
 				pnlPers = totalPnl / totalinv 
@@ -112,7 +111,7 @@ strategy
 				    $('#pnlPers').css({'color':'rgb(72, 189, 18)'}); 
 				}
                 
-				$('#qty').append('<div class="d-flex justify-content-between" ><div class="col-md-4 col-xl-12"><span >'+value.qty+' Qty</span><label>.</label><label>&nbsp; Avg Price '+value.order_avg_price.toFixed(2)+'</label><label class="float-right"><b id="strikePnl" style="font-size: 13px; color:rgb(72, 189, 18)">'+strikePnl.toFixed(2)+'%</b></label></div></div><br><div class="d-flex justify-content-between"><div class="col-md-4 col-xl-12"><label><b style="color: black; font-size:13px">'+value.basket_name +' | ' +value.token_name+' - '+value.order_type+'</b></label><label class="float-right"><b id="pnl" style="font-size: 13px; color:rgb(72, 189, 18)">'+formatter.format(value.pnl)+'</b></label></div></div><br><div class="d-flex justify-content-between"><div class="col-md-4 col-xl-12"><label>Invested : <span style="color: rgb(0, 0, 0)"><b>'+value.total_inv+'</b></span></label><label class="float-right">LTP : <span style="color: rgb(0, 0, 0)"><b>'+value.ltp.toFixed(2)+'</b></span></label></div></div></div><hr>')
+				$('#qty').append('<div class="d-flex justify-content-between" ><div class="col-md-4 col-xl-12"><span >'+value.qty+' Qty</span><label>.</label><label>&nbsp; Avg Price '+value.order_avg_price+'</label><label class="float-right"><b id="strikePnl" style="font-size: 13px; color:rgb(72, 189, 18)">'+strikePnl.toFixed(2)+'%</b></label></div></div><br><div class="d-flex justify-content-between"><div class="col-md-4 col-xl-12"><label><b style="color: black; font-size:13px">'+value.basket_name +' | ' +value.token_name+' - '+value.order_type+'</b></label><label class="float-right"><b id="pnl" style="font-size: 13px; color:rgb(72, 189, 18)">'+formatter.format(value.pnl)+'</b></label></div></div><br><div class="d-flex justify-content-between"><div class="col-md-4 col-xl-12"><label>Invested : <span style="color: rgb(0, 0, 0)"><b>'+value.total_inv+'</b></span></label><label class="float-right">LTP : <span style="color: rgb(0, 0, 0)"><b>'+value.ltp.toFixed(2)+'</b></span></label></div></div></div><hr>')
 				})
 				
 				$('#total').html(formatter.format(totalinv));	

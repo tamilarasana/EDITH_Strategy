@@ -20,7 +20,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('register.post') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -78,7 +78,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
-                                <a  href="login" class="btn btn-success">Login</a>
+                                <a  href="home" class="btn btn-success">Cancel</a>
                             </div>
                         </div>
                     </form>
